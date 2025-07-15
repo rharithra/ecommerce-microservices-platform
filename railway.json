@@ -1,0 +1,120 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "DOCKERFILE"
+  },
+  "deploy": {
+    "startCommand": "java -jar target/*.jar",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "services": [
+    {
+      "name": "discovery-service",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/discovery-service"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8761"
+      },
+      "domains": [
+        {
+          "domain": "discovery-service.railway.app"
+        }
+      ]
+    },
+    {
+      "name": "config-service",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/config-service"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8888",
+        "EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE": "https://discovery-service.railway.app/eureka/"
+      },
+      "domains": [
+        {
+          "domain": "config-service.railway.app"
+        }
+      ]
+    },
+    {
+      "name": "api-gateway",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/api-gateway"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8080",
+        "EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE": "https://discovery-service.railway.app/eureka/"
+      },
+      "domains": [
+        {
+          "domain": "ecommerce-api.railway.app"
+        }
+      ]
+    },
+    {
+      "name": "user-service",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/user-service"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8081",
+        "EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE": "https://discovery-service.railway.app/eureka/"
+      },
+      "domains": [
+        {
+          "domain": "user-service.railway.app"
+        }
+      ]
+    },
+    {
+      "name": "product-catalog-service",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/product-catalog-service"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8082",
+        "EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE": "https://discovery-service.railway.app/eureka/"
+      },
+      "domains": [
+        {
+          "domain": "product-service.railway.app"
+        }
+      ]
+    },
+    {
+      "name": "payment-service",
+      "source": {
+        "repo": "ecommerce-microservices-platform",
+        "branch": "main",
+        "rootDirectory": "/payment-service"
+      },
+      "variables": {
+        "SPRING_PROFILES_ACTIVE": "cloud",
+        "SERVER_PORT": "8084",
+        "EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE": "https://discovery-service.railway.app/eureka/"
+      },
+      "domains": [
+        {
+          "domain": "payment-service.railway.app"
+        }
+      ]
+    }
+  ]
+} 
